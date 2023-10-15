@@ -70,7 +70,8 @@ brfss_smart =
   brfss_smart2010 |>
   as_tibble()|>
   janitor::clean_names()|>
-  rename(state = locationabbr)|>
+  rename(state = locationabbr,
+         location = locationdesc)|>
   filter(topic == 'Overall Health')|>
   filter(response %in% c('Excellent','Poor'))|>
   arrange(desc(response))
@@ -80,12 +81,12 @@ brfss_smart =
 brfss_smart |>
   filter(year == 2002)|>
   group_by(state)|>
-  summarize(n_locations = n_distinct(locationdesc))|>
+  summarize(n_locations = n_distinct(location))|>
   arrange(desc(n_locations))
 brfss_smart |>
   filter(year == 2010)|>
   group_by(state)|>
-  summarize(n_locations = n_distinct(locationdesc))|>
+  summarize(n_locations = n_distinct(location))|>
   arrange(desc(n_locations))
 
 ```
@@ -107,7 +108,7 @@ brfss_smart |>
 year2006_df = 
   brfss_smart |>
   filter((year == 2006) & (state == 'NY')) |>
-  group_by(locationdesc)|>
+  group_by(location)|>
   ggplot(aes(x = response, y = data_value)) + 
   geom_boxplot()+
   ggtitle('year2006')
@@ -115,7 +116,7 @@ year2006_df =
 year2010_df = 
   brfss_smart |>
   filter((year == 2010) & (state == 'NY')) |>
-  group_by(locationdesc)|>
+  group_by(location)|>
   ggplot(aes(x = response, y = data_value)) + 
   geom_boxplot()+
   ggtitle('year2010')
