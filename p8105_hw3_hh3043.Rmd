@@ -101,3 +101,15 @@ brfss_smart |>
     theme(legend.position = "bottom")
 ```
 
+
+```{r}
+year2006_df =
+  brfss_smart |>
+  filter((year == 2006) & (state == 'NY')) |>
+  group_by(locationdesc)|>
+  ggplot(aes(x = data_value, fill = response)) +
+  geom_density(alpha = .5) + 
+  facet_grid(~locationdesc)  + 
+  viridis::scale_fill_viridis(discrete = TRUE)
+```
+
