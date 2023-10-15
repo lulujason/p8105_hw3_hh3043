@@ -196,6 +196,33 @@ ggplot(aes(x = education, y = age, fill = sex)) +
 From the table we can get that there are more male in High school equivalent education level,more female in Less than high school and More than high school education level.
 From the plot, we can get that the median of the age of female is higher in High school equivalent education level. The median of age of male is highed than female's in more than high school education level.
 
+```{r}
+nhanes |> 
+  group_by(seqn, sex, age, education) |> 
+  summarize(total_activity = sum(mims)) |> 
+  ggplot(aes(x = age, y = total_activity, color = sex)) + 
+  geom_point() +
+  geom_smooth() +
+  facet_grid(. ~ education) + 
+  labs(title = "total activity against age", 
+        x = "age",
+        y = "total activity") 
+```
+AS the age increases, the mims decreases with the highest speed for less than high school education level in general.
+
+
+```{r}
+nhanes |>
+  mutate(
+    minute = as.numeric(min)
+  ) |> 
+  ggplot(aes(x = minute, y = mims, color = sex)) + 
+  geom_point(alpha = 0.5) +
+  facet_grid(. ~education) +
+  labs(title = " 24-hour activity time course", 
+        x = "Minutes of a Day",
+        y = "Activity")
+```
 
 
 
