@@ -69,6 +69,7 @@ brfss_smart =
   brfss_smart2010 |>
   as_tibble()|>
   janitor::clean_names()|>
+  rename(state = locationabbr)|>
   filter(topic == 'Overall Health')|>
   filter(response %in% c('Excellent','Poor'))|>
   arrange(desc(response))
@@ -77,16 +78,26 @@ brfss_smart =
 ```{r}
 brfss_smart |>
   filter(year == 2002)|>
-  group_by(locationabbr)|>
+  group_by(state)|>
   summarize(n_locations = n_distinct(locationdesc))|>
   arrange(desc(n_locations))
 brfss_smart |>
   filter(year == 2010)|>
-  group_by(locationabbr)|>
+  group_by(state)|>
   summarize(n_locations = n_distinct(locationdesc))|>
   arrange(desc(n_locations))
 
 ```
 In 2002, PA,MA,NJ,CT,FL,NC are states were observed at 7 or more locations.
 iN2010, FL,NJ,TX,CA,MD,NC,NE,WA,MA,NY,OH,CO,PA,SC are states were observed at 7 or more locations.
+
+```{r}
+brfss_smart |>
+  filter(response == 'Excellent')|>
+  group_by(state,year) |>
+  summarize(mean_data = mean(data_value))|>
+  ggplot(aes(x = year, y = mean_data, color = state)) + 
+    geom_point() + geom_line() +
+    theme(legend.position = "bottom")
+```
 
