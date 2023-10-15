@@ -74,4 +74,19 @@ brfss_smart =
   arrange(desc(response))
 ```
 
+```{r}
+brfss_smart |>
+  filter(year == 2002)|>
+  group_by(locationabbr)|>
+  summarize(n_locations = n_distinct(locationdesc))|>
+  arrange(desc(n_locations))
+brfss_smart |>
+  filter(year == 2010)|>
+  group_by(locationabbr)|>
+  summarize(n_locations = n_distinct(locationdesc))|>
+  arrange(desc(n_locations))
+
+```
+In 2002, PA,MA,NJ,CT,FL,NC are states were observed at 7 or more locations.
+iN2010, FL,NJ,TX,CA,MD,NC,NE,WA,MA,NY,OH,CO,PA,SC are states were observed at 7 or more locations.
 
