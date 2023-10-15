@@ -160,9 +160,9 @@ covar =
         education, 
         "1" = "Less than high school",
         "2" = "High school equivalent",
-        "3" = "More than high school",
-        education = fct_relevel(education, c("Less than high school", "High school equivalent","More than high school"))
-        )
+        "3" = "More than high school"),
+      education = fct_relevel(education, c("Less than high school", "High school equivalent","More than high school"))
+        
       ) 
   
 nhanes = inner_join(accel,covar)
