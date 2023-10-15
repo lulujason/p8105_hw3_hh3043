@@ -6,7 +6,8 @@ output: github_document
 library(tidyverse)
 library(dplyr)
 library(p8105.datasets)
-
+library(patchwork)
+library(tidyr)
 ```
 There are 1384617 observations and 15 variables. Each row is the information about the order. There are variables named order_id and product_id which let us figure out the id number of order and product.There is also variable describing name of the product(e.g. Spring Water).Variables including department_id and department offers information about the department(e.g. dairy eggs) of the product.
 
@@ -103,13 +104,75 @@ brfss_smart |>
 
 
 ```{r}
-year2006_df =
+year2006_df = 
   brfss_smart |>
   filter((year == 2006) & (state == 'NY')) |>
   group_by(locationdesc)|>
-  ggplot(aes(x = data_value, fill = response)) +
-  geom_density(alpha = .5) + 
-  facet_grid(~locationdesc)  + 
-  viridis::scale_fill_viridis(discrete = TRUE)
+  ggplot(aes(x = response, y = data_value)) + 
+  geom_boxplot()+
+  ggtitle('year2006')
+ 
+year2010_df = 
+  brfss_smart |>
+  filter((year == 2010) & (state == 'NY')) |>
+  group_by(locationdesc)|>
+  ggplot(aes(x = response, y = data_value)) + 
+  geom_boxplot()+
+  ggtitle('year2010')
+
+(year2010_df/year2006_df)
+
 ```
+
+
+problem 3
+
+clean and tidy accel and covar datasets,and then merge.
+```{r}
+accel = 
+  read_csv(
+    '.\\nhanes_accel.csv')|> 
+  janitor::clean_names()|>
+  pivot_longer(
+    min1 : min1440,
+
+
+    names_to = "min",
+    names_prefix = "min",
+    values_to = "mims"
+
+  )
+
+
+covar = 
+  read_csv(
+    '.\\nhanes_covar.csv',skip = 4
+  )|>
+  janitor::clean_names()|>
+  drop_na()|>
+  filter(age>=21)
+  mutate(
+      sex = recode(
+        sex,
+        "1" = "male", 
+        "2" = "female"),
+      education = recode(
+        education, 
+        "1" = "Less than high school",
+        "2" = "High school equivalent",
+        "3" = "More than high school")
+      ) 
+  
+nhanes = inner_join(accel,covar)
+  
+
+
+```
+
+
+```{r}
+
+```
+
+
 
