@@ -224,6 +224,6 @@ nhanes |>
         x = "Minutes of a Day",
         y = "Activity")
 ```
-
+The plot shows  that female has higher activity than man in high school equivelanr and less than high school education.
 
 
